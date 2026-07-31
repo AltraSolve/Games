@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎮 Kids Game Hub</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js">
+    </script>
+    <style>
+        /* ===== CSS Variables & Reset ===== */
+        :root {
+            --primary: #6C63FF;
+            --primary-light: #8B83FF;
+            --secondary: #FF6584;
+            --accent: #FFD93D;
+            --success: #6BCB77;
+            --danger: #FF6B6B;
+            --bg: #F0F4FF;
+            --card: #FFFFFF;
+            --text: #2D3436;
+            --shadow: 0 12px 40px rgba(108, 99, 255, 0.20);
+            --radius: 24px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 10% 30%, rgba(108, 99, 255, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 90% 70%, rgba(255, 101, 132, 0.08) 0%, transparent 60%);
+        }
+
+        /* ===== Main Container ===== */
+        #app {
+            width: 100%;
+            max-width: 820px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px 28px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        /* subtle animated gradient border */
+        #app::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: calc(var(--radius) + 2px);
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: borderGlow 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+        @keyframes borderGlow {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* ===== Header ===== */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .app-title span {
+            -webkit-text-fill-color: initial;
+            color: var(--text);
+        }
+        .score-summary {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--bg);
+            padding: 8px 18px;
+            border-radius: 40px;
+            flex-wrap: wrap;
+        }
+        .score-summary .badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .score-summary .badge.win {
+            color: var(--success);
+        }
+        .score-summary .badge.loss {
+            color: var(--danger);
+        }
+
+        /* ===== Menu ===== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 18px;
+            margin: 20px 0 10px;
+        }
+        .menu-card {
+            background: var(--bg);
+            border-radius: 18px;
+            padding: 24px 16px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary-light);
+            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.15);
+        }
+        .menu-card .icon {
+            font-size: 44px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .menu-card .name {
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--text);
+        }
+        .menu-card .desc {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+        .menu-card .stats {
+            margin-top: 10px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            color: #666;
+        }
+        .menu-card .stats .w {
+            color: var(--success);
+        }
+        .menu-card .stats .l {
+            color: var(--danger);
+        }
+
+        /* ===== Game Container ===== */
+        .game-container {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+        .game-container.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .game-header .title {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .game-header .title .emoji {
+            font-size: 28px;
+        }
+        .game-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .btn:hover {
+            transform: scale(1.04);
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+        .btn-secondary {
+            background: var(--secondary);
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: #ff7a95;
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        .btn-gold {
+            background: var(--accent);
+            color: #333;
+        }
+        .btn-back {
+            background: transparent;
+            font-size: 22px;
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+        .btn-back:hover {
+            background: var(--bg);
+        }
+
+        .game-score {
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--bg);
+            padding: 6px 18px;
+            border-radius: 40px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .game-score .w {
+            color: var(--success);
+        }
+        .game-score .l {
+            color: var(--danger);
+        }
+        .game-score .d {
+            color: #888;
+        }
+
+        /* ============================================================
+                   TIC-TAC-TOE
+                   ============================================================ */
+        .ttt-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 360px;
+            margin: 10px auto;
+            aspect-ratio: 1/1;
+        }
+        .ttt-cell {
+            background: var(--bg);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 54px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            aspect-ratio: 1/1;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .ttt-cell:hover {
+            background: #e8edff;
+        }
+        .ttt-cell.x {
+            color: var(--primary);
+        }
+        .ttt-cell.o {
+            color: var(--secondary);
+        }
+        .ttt-cell.win-cell {
+            background: var(--success);
+            color: #fff !important;
+            animation: pop 0.4s ease;
+            transform: scale(1.05);
+        }
+        .ttt-status {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 12px 0 8px;
+            min-height: 40px;
+        }
+        .ttt-status .highlight {
+            color: var(--primary);
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* ============================================================
+                   MATH CHALLENGE
+                   ============================================================ */
+        .math-area {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .math-problem {
+            font-size: 52px;
+            font-weight: 800;
+            background: var(--bg);
+            padding: 20px 30px;
+            border-radius: 24px;
+            display: inline-block;
+            margin: 6px auto 14px;
+            letter-spacing: 2px;
+            min-width: 200px;
+        }
+        .math-problem .op {
+            color: var(--secondary);
+        }
+        .math-problem .eq {
+            color: var(--primary);
+        }
+        .math-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin: 14px 0 10px;
+        }
+        .math-options .opt {
+            padding: 14px 32px;
+            font-size: 24px;
+            font-weight: 700;
+            border-radius: 60px;
+            background: var(--bg);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid transparent;
+            min-width: 80px;
+        }
+        .math-options .opt:hover {
+            transform: scale(1.06);
+            border-color: var(--primary-light);
+        }
+        .math-options .opt.correct {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+        .math-options .opt.wrong {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+            animation: shake 0.4s ease;
+        }
+        .math-options .opt.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-12px);
+            }
+            75% {
+                transform: translateX(12px);
+            }
+        }
+
+        .math-timer {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 6px 0 12px;
+        }
+        .math-streak {
+            font-size: 15px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .math-streak strong {
+            color: var(--accent);
+            font-size: 20px;
+        }
+
+        /* difficulty selector */
+        .diff-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 6px 0 12px;
+        }
+        .diff-group .diff-btn {
+            padding: 4px 16px;
+            border-radius: 40px;
+            border: 2px solid #ddd;
+            background: transparent;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .diff-group .diff-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+        }
+        .diff-group .diff-btn:hover {
+            border-color: var(--primary-light);
+        }
+
+        /* ============================================================
+                   MEMORY MATCH
+                   ============================================================ */
+        .mem-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-width: 440px;
+            margin: 10px auto;
+        }
+        .mem-card {
+            aspect-ratio: 1/1;
+            background: linear-gradient(145deg, var(--primary), var(--primary-light));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.25);
+            user-select: none;
+            color: transparent;
+            transform: rotateY(0deg);
+        }
+        .mem-card.flipped {
+            background: var(--bg);
+            color: var(--text);
+            transform: rotateY(180deg);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        .mem-card.matched {
+            background: var(--success);
+            color: #fff !important;
+            cursor: default;
+            transform: scale(0.95);
+            box-shadow: 0 0 20px rgba(107, 203, 119, 0.4);
+        }
+        .mem-card.matched .mem-emoji {
+            filter: brightness(10);
+        }
+        .mem-card:hover:not(.flipped):not(.matched) {
+            transform: scale(1.04);
+        }
+        .mem-card .mem-emoji {
+            transition: 0.2s;
+        }
+        .mem-info {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 8px 0 12px;
+            flex-wrap: wrap;
+        }
+        .mem-info span {
+            background: var(--bg);
+            padding: 4px 18px;
+            border-radius: 40px;
+        }
+
+        /* ============================================================
+                   SLIDE PUZZLE
+                   ============================================================ */
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 360px;
+            margin: 10px auto;
+            aspect-ratio: 1/1;
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 8px;
+        }
+        .puzzle-tile {
+            background: var(--primary);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            aspect-ratio: 1/1;
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.25);
+            user-select: none;
+        }
+        .puzzle-tile.empty {
+            background: transparent;
+            box-shadow: none;
+            cursor: default;
+            color: transparent;
+        }
+        .puzzle-tile:hover:not(.empty) {
+            transform: scale(1.04);
+            background: var(--primary-light);
+        }
+        .puzzle-tile.win-tile {
+            background: var(--success);
+            animation: pop 0.4s ease;
+        }
+        .puzzle-info {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 8px 0 12px;
+            flex-wrap: wrap;
+        }
+        .puzzle-info span {
+            background: var(--bg);
+            padding: 4px 18px;
+            border-radius: 40px;
+        }
+
+        /* ===== Confetti ===== */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.4);
+                opacity: 0;
+            }
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--text);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 999;
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            background: var(--success);
+        }
+        .toast.error {
+            background: var(--danger);
+        }
+        .toast.info {
+            background: var(--primary);
+        }
+
+        /* ===== Footer ===== */
+        .app-footer {
+            text-align: center;
+            margin-top: 26px;
+            padding-top: 18px;
+            border-top: 2px solid var(--bg);
+            font-size: 15px;
+            font-weight: 600;
+            color: #aaa;
+            letter-spacing: 0.3px;
+        }
+        .app-footer .brand {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            #app {
+                padding: 18px 14px 30px;
+            }
+            .app-title {
+                font-size: 22px;
+            }
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .menu-card {
+                padding: 18px 10px 16px;
+            }
+            .menu-card .icon {
+                font-size: 34px;
+            }
+            .ttt-board {
+                max-width: 280px;
+                gap: 8px;
+            }
+            .ttt-cell {
+                font-size: 40px;
+                border-radius: 14px;
+            }
+            .math-problem {
+                font-size: 36px;
+                padding: 14px 20px;
+                min-width: 140px;
+            }
+            .math-options .opt {
+                padding: 10px 20px;
+                font-size: 20px;
+                min-width: 60px;
+            }
+            .mem-grid {
+                gap: 8px;
+                max-width: 320px;
+            }
+            .mem-card {
+                font-size: 30px;
+                border-radius: 14px;
+            }
+            .puzzle-board {
+                max-width: 280px;
+                padding: 6px;
+                gap: 6px;
+            }
+            .puzzle-tile {
+                font-size: 26px;
+                border-radius: 12px;
+            }
+            .game-header .title {
+                font-size: 18px;
+            }
+            .btn {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            .score-summary {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .game-score {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .math-timer {
+                font-size: 17px;
+            }
+            .app-footer {
+                font-size: 13px;
+                margin-top: 18px;
+                padding-top: 14px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .menu-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .menu-card .name {
+                font-size: 14px;
+            }
+            .ttt-board {
+                max-width: 220px;
+                gap: 6px;
+            }
+            .ttt-cell {
+                font-size: 30px;
+                border-radius: 10px;
+            }
+            .mem-grid {
+                gap: 6px;
+                max-width: 260px;
+            }
+            .mem-card {
+                font-size: 24px;
+                border-radius: 10px;
+            }
+            .puzzle-board {
+                max-width: 220px;
+            }
+            .puzzle-tile {
+                font-size: 20px;
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== APP ====== -->
+    <div id="app">
+
+        <!-- Header -->
+        <div class="app-header">
+            <div class="app-title">🎮 <span>Game Hub</span></div>
+            <div class="score-summary" id="globalScore">
+                <span class="badge win">🏆 <span id="totalWins">0</span></span>
+                <span class="badge loss">💔 <span id="totalLosses">0</span></span>
+            </div>
+        </div>
+
+        <!-- ====== MENU ====== -->
+        <div id="menuView">
+            <div class="menu-grid">
+                <div class="menu-card" data-game="ttt">
+                    <span class="icon">❌⭕</span>
+                    <div class="name">Tic-Tac-Toe</div>
+                    <div class="desc">Classic X & O</div>
+                    <div class="stats"><span class="w">🏆 <span id="menu-ttt-w">0</span></span><span class="l">💔 <span id="menu-ttt-l">0</span></span></div>
+                </div>
+                <div class="menu-card" data-game="math">
+                    <span class="icon">🧮</span>
+                    <div class="name">Math Challenge</div>
+                    <div class="desc">➕➖✖️</div>
+                    <div class="stats"><span class="w">🏆 <span id="menu-math-w">0</span></span><span class="l">💔 <span id="menu-math-l">0</span></span></div>
+                </div>
+                <div class="menu-card" data-game="memory">
+                    <span class="icon">🃏</span>
+                    <div class="name">Memory Match</div>
+                    <div class="desc">Flip & find pairs</div>
+                    <div class="stats"><span class="w">🏆 <span id="menu-memory-w">0</span></span><span class="l">💔 <span id="menu-memory-l">0</span></span></div>
+                </div>
+                <div class="menu-card" data-game="puzzle">
+                    <span class="icon">🧩</span>
+                    <div class="name">Slide Puzzle</div>
+                    <div class="desc">Arrange 1–8</div>
+                    <div class="stats"><span class="w">🏆 <span id="menu-puzzle-w">0</span></span><span class="l">💔 <span id="menu-puzzle-l">0</span></span></div>
+                </div>
+            </div>
+            <p style="text-align:center;margin-top:18px;font-size:14px;color:#aaa;">👆 Tap a game to start playing!</p>
+        </div>
+
+        <!-- ====== TIC-TAC-TOE ====== -->
+        <div class="game-container" id="game-ttt">
+            <div class="game-header">
+                <div class="title"><span class="emoji">❌⭕</span> Tic-Tac-Toe</div>
+                <div class="game-actions">
+                    <button class="btn btn-back" data-back>⬅</button>
+                    <button class="btn btn-primary" id="tttReset">🔄 New Game</button>
+                </div>
+            </div>
+            <div class="game-score">
+                <span>🏆 <span class="w" id="tttScoreW">0</span></span>
+                <span>💔 <span class="l" id="tttScoreL">0</span></span>
+                <span>🤝 <span class="d" id="tttScoreD">0</span></span>
+            </div>
+            <div class="ttt-status" id="tttStatus">👋 Player <span class="highlight">X</span>'s turn</div>
+            <div class="ttt-board" id="tttBoard">
+                <!-- 9 cells -->
+            </div>
+        </div>
+
+        <!-- ====== MATH CHALLENGE ====== -->
+        <div class="game-container" id="game-math">
+            <div class="game-header">
+                <div class="title"><span class="emoji">🧮</span> Math Challenge</div>
+                <div class="game-actions">
+                    <button class="btn btn-back" data-back>⬅</button>
+                    <button class="btn btn-primary" id="mathReset">🔄 New</button>
+                </div>
+            </div>
+            <div class="game-score">
+                <span>🏆 <span class="w" id="mathScoreW">0</span></span>
+                <span>💔 <span class="l" id="mathScoreL">0</span></span>
+                <span>🔥 Streak: <span id="mathStreak">0</span></span>
+            </div>
+            <div class="diff-group">
+                <button class="diff-btn active" data-diff="easy">😊 Easy</button>
+                <button class="diff-btn" data-diff="medium">🤔 Medium</button>
+                <button class="diff-btn" data-diff="hard">😈 Hard</button>
+            </div>
+            <div class="math-area">
+                <div class="math-timer">⏱️ <span id="mathTimer">30</span>s</div>
+                <div class="math-problem" id="mathProblem">5 <span class="op">+</span> 3 <span class="eq">=</span> ?</div>
+                <div class="math-options" id="mathOptions"></div>
+                <div class="math-streak" id="mathStreakDisplay">🔥 Streak: <strong id="mathStreakNum">0</strong></div>
+            </div>
+        </div>
+
+        <!-- ====== MEMORY MATCH ====== -->
+        <div class="game-container" id="game-memory">
+            <div class="game-header">
+                <div class="title"><span class="emoji">🃏</span> Memory Match</div>
+                <div class="game-actions">
+                    <button class="btn btn-back" data-back>⬅</button>
+                    <button class="btn btn-primary" id="memReset">🔄 New Game</button>
+                </div>
+            </div>
+            <div class="game-score">
+                <span>🏆 <span class="w" id="memScoreW">0</span></span>
+                <span>💔 <span class="l" id="memScoreL">0</span></span>
+                <span>🎯 Pairs: <span id="memPairs">0</span>/8</span>
+                <span>👆 Moves: <span id="memMoves">0</span></span>
+            </div>
+            <div class="mem-grid" id="memGrid"></div>
+        </div>
+
+        <!-- ====== SLIDE PUZZLE ====== -->
+        <div class="game-container" id="game-puzzle">
+            <div class="game-header">
+                <div class="title"><span class="emoji">🧩</span> Slide Puzzle</div>
+                <div class="game-actions">
+                    <button class="btn btn-back" data-back>⬅</button>
+                    <button class="btn btn-primary" id="puzzleReset">🔄 Shuffle</button>
+                </div>
+            </div>
+            <div class="game-score">
+                <span>🏆 <span class="w" id="puzzleScoreW">0</span></span>
+                <span>💔 <span class="l" id="puzzleScoreL">0</span></span>
+                <span>👆 Moves: <span id="puzzleMoves">0</span></span>
+                <span>⏱️ <span id="puzzleTimer">0</span>s</span>
+            </div>
+            <div class="puzzle-board" id="puzzleBoard"></div>
+            <p style="text-align:center;font-size:14px;color:#888;margin-top:8px;">Tap a tile next to the empty space to slide it.</p>
+        </div>
+
+        <!-- ====== FOOTER ====== -->
+        <div class="app-footer">
+            🚀 Built with ❤️ by <span class="brand">Altra Solve</span>
+        </div>
+
+    </div>
+
+    <!-- ====== TOAST ====== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ====== CONFETTI CONTAINER ====== -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- ============================================================== -->
+    <!-- ====== JAVASCRIPT ====== -->
+    <script>
+        $(function() {
+
+            // ============================================================
+            //  HELPERS
+            // ============================================================
+            function showToast(msg, type) {
+                var $t = $('#toast');
+                $t.text(msg).removeClass('show success error info');
+                if (type) $t.addClass(type);
+                $t.addClass('show');
+                clearTimeout($t.data('timer'));
+                $t.data('timer', setTimeout(function() { $t.removeClass('show'); }, 2500));
+            }
+
+            function fireConfetti(count) {
+                count = count || 60;
+                var $c = $('#confettiContainer');
+                var colors = ['#6C63FF', '#FF6584', '#FFD93D', '#6BCB77', '#FF6B6B', '#4ECDC4', '#FF9F1C'];
+                for (var i = 0; i < count; i++) {
+                    var el = $('<div class="confetti-piece"></div>');
+                    var size = 6 + Math.random() * 10;
+                    var left = Math.random() * 100;
+                    var delay = Math.random() * 1.2;
+                    var dur = 2 + Math.random() * 2;
+                    var color = colors[Math.floor(Math.random() * colors.length)];
+                    el.css({
+                        left: left + '%',
+                        width: size + 'px',
+                        height: size * (0.6 + Math.random() * 0.8) + 'px',
+                        background: color,
+                        animationDuration: dur + 's',
+                        animationDelay: delay + 's',
+                        borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+                    });
+                    $c.append(el);
+                    setTimeout(function() { el.remove(); }, (dur + delay) * 1000 + 100);
+                }
+            }
+
+            function updateGlobalScore() {
+                var tw = 0,
+                    tl = 0;
+                ['ttt', 'math', 'memory', 'puzzle'].forEach(function(g) {
+                    tw += parseInt(localStorage.getItem('score_' + g + '_w') || 0);
+                    tl += parseInt(localStorage.getItem('score_' + g + '_l') || 0);
+                });
+                $('#totalWins').text(tw);
+                $('#totalLosses').text(tl);
+            }
+
+            function updateMenuStats() {
+                ['ttt', 'math', 'memory', 'puzzle'].forEach(function(g) {
+                    var w = parseInt(localStorage.getItem('score_' + g + '_w') || 0);
+                    var l = parseInt(localStorage.getItem('score_' + g + '_l') || 0);
+                    $('#menu-' + g + '-w').text(w);
+                    $('#menu-' + g + '-l').text(l);
+                });
+            }
+
+            function getScore(game) {
+                return {
+                    w: parseInt(localStorage.getItem('score_' + game + '_w') || 0),
+                    l: parseInt(localStorage.getItem('score_' + game + '_l') || 0)
+                };
+            }
+
+            function setScore(game, w, l) {
+                localStorage.setItem('score_' + game + '_w', w);
+                localStorage.setItem('score_' + game + '_l', l);
+                updateGlobalScore();
+                updateMenuStats();
+            }
+
+            function addWin(game) {
+                var s = getScore(game);
+                setScore(game, s.w + 1, s.l);
+                fireConfetti(50);
+                showToast('🎉 You won!', 'success');
+            }
+
+            function addLoss(game) {
+                var s = getScore(game);
+                setScore(game, s.w, s.l + 1);
+                showToast('😅 Better luck next time!', 'error');
+            }
+
+            function addDraw(game) {
+                // draw doesn't affect win/loss
+                showToast('🤝 It\'s a draw!', 'info');
+            }
+
+            // ============================================================
+            //  NAVIGATION
+            // ============================================================
+            var currentGame = null;
+
+            function showGame(gameId) {
+                $('.game-container').removeClass('active');
+                $('#menuView').hide();
+                if (gameId) {
+                    $('#game-' + gameId).addClass('active');
+                    currentGame = gameId;
+                } else {
+                    $('#menuView').show();
+                    currentGame = null;
+                    updateMenuStats();
+                    updateGlobalScore();
+                }
+                // update game scores
+                if (gameId === 'ttt') updateTTTScoreUI();
+                if (gameId === 'math') updateMathScoreUI();
+                if (gameId === 'memory') updateMemScoreUI();
+                if (gameId === 'puzzle') updatePuzzleScoreUI();
+            }
+
+            $('.menu-card').on('click', function() {
+                var g = $(this).data('game');
+                showGame(g);
+                if (g === 'ttt') initTTT();
+                if (g === 'math') initMath();
+                if (g === 'memory') initMemory();
+                if (g === 'puzzle') initPuzzle();
+            });
+
+            $('[data-back]').on('click', function() {
+                showGame(null);
+            });
+
+            // ============================================================
+            //  TIC-TAC-TOE
+            // ============================================================
+            var tttState = {
+                board: ['', '', '', '', '', '', '', '', ''],
+                turn: 'X',
+                gameOver: false,
+                scoreW: 0,
+                scoreL: 0,
+                scoreD: 0
+            };
+
+            function updateTTTScoreUI() {
+                var s = getScore('ttt');
+                var d = parseInt(localStorage.getItem('score_ttt_d') || 0);
+                $('#tttScoreW').text(s.w);
+                $('#tttScoreL').text(s.l);
+                $('#tttScoreD').text(d);
+            }
+
+            function initTTT() {
+                tttState.board = ['', '', '', '', '', '', '', '', ''];
+                tttState.turn = 'X';
+                tttState.gameOver = false;
+                var s = getScore('ttt');
+                tttState.scoreW = s.w;
+                tttState.scoreL = s.l;
+                tttState.scoreD = parseInt(localStorage.getItem('score_ttt_d') || 0);
+                renderTTT();
+                $('#tttStatus').html('👋 Player <span class="highlight">X</span>\'s turn');
+                updateTTTScoreUI();
+            }
+
+            function renderTTT() {
+                var $b = $('#tttBoard');
+                $b.empty();
+                for (var i = 0; i < 9; i++) {
+                    var $c = $('<div class="ttt-cell" data-idx="' + i + '">' + tttState.board[i] + '</div>');
+                    if (tttState.board[i] === 'X') $c.addClass('x');
+                    if (tttState.board[i] === 'O') $c.addClass('o');
+                    $b.append($c);
+                }
+            }
+
+            function checkTTTWin() {
+                var b = tttState.board;
+                var lines = [
+                    [0, 1, 2],
+                    [3, 4, 5],
+                    [6, 7, 8],
+                    [0, 3, 6],
+                    [1, 4, 7],
+                    [2, 5, 8],
+                    [0, 4, 8],
+                    [2, 4, 6]
+                ];
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[1]] === b[l[2]]) {
+                        return { winner: b[l[0]], cells: l };
+                    }
+                }
+                if (b.every(function(c) { return c !== ''; })) {
+                    return { winner: 'draw', cells: [] };
+                }
+                return null;
+            }
+
+            function handleTTTClick(idx) {
+                if (tttState.gameOver) return;
+                if (tttState.board[idx] !== '') return;
+                tttState.board[idx] = tttState.turn;
+                renderTTT();
+                var result = checkTTTWin();
+                if (result) {
+                    tttState.gameOver = true;
+                    if (result.winner === 'X') {
+                        $('.ttt-cell[data-idx="' + result.cells[0] + '"]').addClass('win-cell');
+                        $('.ttt-cell[data-idx="' + result.cells[1] + '"]').addClass('win-cell');
+                        $('.ttt-cell[data-idx="' + result.cells[2] + '"]').addClass('win-cell');
+                        $('#tttStatus').html('🎉 Player <span class="highlight">X</span> wins!');
+                        addWin('ttt');
+                        updateTTTScoreUI();
+                    } else if (result.winner === 'O') {
+                        $('.ttt-cell[data-idx="' + result.cells[0] + '"]').addClass('win-cell');
+                        $('.ttt-cell[data-idx="' + result.cells[1] + '"]').addClass('win-cell');
+                        $('.ttt-cell[data-idx="' + result.cells[2] + '"]').addClass('win-cell');
+                        $('#tttStatus').html('🎉 Player <span class="highlight">O</span> wins!');
+                        addWin('ttt');
+                        updateTTTScoreUI();
+                    } else {
+                        $('#tttStatus').html('🤝 It\'s a draw!');
+                        var d = parseInt(localStorage.getItem('score_ttt_d') || 0);
+                        localStorage.setItem('score_ttt_d', d + 1);
+                        updateTTTScoreUI();
+                        addDraw('ttt');
+                    }
+                    return;
+                }
+                tttState.turn = (tttState.turn === 'X') ? 'O' : 'X';
+                $('#tttStatus').html('👋 Player <span class="highlight">' + tttState.turn + '</span>\'s turn');
+            }
+
+            $('#tttBoard').on('click', '.ttt-cell', function() {
+                var idx = parseInt($(this).data('idx'));
+                handleTTTClick(idx);
+            });
+
+            $('#tttReset').on('click', function() {
+                initTTT();
+            });
+
+            // ============================================================
+            //  MATH CHALLENGE
+            // ============================================================
+            var mathState = {
+                difficulty: 'easy',
+                scoreW: 0,
+                scoreL: 0,
+                streak: 0,
+                timer: 30,
+                timerId: null,
+                busy: false,
+                currentAnswer: null,
+                options: []
+            };
+
+            function updateMathScoreUI() {
+                var s = getScore('math');
+                $('#mathScoreW').text(s.w);
+                $('#mathScoreL').text(s.l);
+                $('#mathStreak').text(mathState.streak);
+                $('#mathStreakNum').text(mathState.streak);
+            }
+
+            function generateMathProblem() {
+                var diff = mathState.difficulty;
+                var maxNum, ops;
+                if (diff === 'easy') { maxNum = 10;
+                    ops = ['+', '-']; } else if (diff === 'medium') { maxNum = 25;
+                    ops = ['+', '-', '×']; } else { maxNum = 50;
+                    ops = ['+', '-', '×']; }
+                var a = Math.floor(Math.random() * maxNum) + 1;
+                var b = Math.floor(Math.random() * maxNum) + 1;
+                var op = ops[Math.floor(Math.random() * ops.length)];
+                var answer;
+                var display;
+                if (op === '+') { answer = a + b;
+                    display = a + ' <span class="op">+</span> ' + b; } else if (op === '-') {
+                    if (a < b) { var tmp = a;
+                        a = b;
+                        b = tmp; }
+                    answer = a - b;
+                    display = a + ' <span class="op">−</span> ' + b;
+                } else { answer = a * b;
+                    display = a + ' <span class="op">×</span> ' + b; }
+                // generate options
+                var opts = new Set();
+                opts.add(answer);
+                while (opts.size < 4) {
+                    var offset = Math.floor(Math.random() * Math.max(6, Math.min(20, answer + 5))) + 1;
+                    var sign = Math.random() > 0.5 ? 1 : -1;
+                    var candidate = answer + sign * offset;
+                    if (candidate >= 0 && candidate <= 200) opts.add(candidate);
+                }
+                var optArr = Array.from(opts).sort(function() { return Math.random() - 0.5; });
+                mathState.currentAnswer = answer;
+                mathState.options = optArr;
+                $('#mathProblem').html(display + ' <span class="eq">=</span> ?');
+                var $opts = $('#mathOptions');
+                $opts.empty();
+                optArr.forEach(function(val) {
+                    $opts.append('<div class="opt" data-value="' + val + '">' + val + '</div>');
+                });
+                mathState.busy = false;
+            }
+
+            function startMathTimer() {
+                if (mathState.timerId) clearInterval(mathState.timerId);
+                mathState.timer = 30;
+                $('#mathTimer').text(mathState.timer);
+                mathState.timerId = setInterval(function() {
+                    mathState.timer--;
+                    $('#mathTimer').text(mathState.timer);
+                    if (mathState.timer <= 0) {
+                        clearInterval(mathState.timerId);
+                        mathState.timerId = null;
+                        // time's up — loss
+                        if (!mathState.busy) {
+                            mathState.busy = true;
+                            addLoss('math');
+                            mathState.streak = 0;
+                            updateMathScoreUI();
+                            showToast('⏰ Time\'s up!', 'error');
+                            setTimeout(function() {
+                                if (currentGame === 'math') {
+                                    generateMathProblem();
+                                    startMathTimer();
+                                }
+                            }, 1200);
+                        }
+                    }
+                }, 1000);
+            }
+
+            function initMath() {
+                var s = getScore('math');
+                mathState.scoreW = s.w;
+                mathState.scoreL = s.l;
+                mathState.streak = 0;
+                mathState.busy = false;
+                if (mathState.timerId) clearInterval(mathState.timerId);
+                updateMathScoreUI();
+                generateMathProblem();
+                startMathTimer();
+                // highlight active diff
+                $('.diff-btn').removeClass('active');
+                $('.diff-btn[data-diff="' + mathState.difficulty + '"]').addClass('active');
+            }
+
+            $('#mathOptions').on('click', '.opt', function() {
+                if (mathState.busy) return;
+                var val = parseInt($(this).data('value'));
+                var correct = (val === mathState.currentAnswer);
+                mathState.busy = true;
+                var $all = $('#mathOptions .opt');
+                $all.addClass('disabled');
+                if (correct) {
+                    $(this).addClass('correct');
+                    mathState.streak++;
+                    var s = getScore('math');
+                    setScore('math', s.w + 1, s.l);
+                    updateMathScoreUI();
+                    fireConfetti(25);
+                    showToast('✅ Correct!', 'success');
+                } else {
+                    $(this).addClass('wrong');
+                    $all.each(function() {
+                        if (parseInt($(this).data('value')) === mathState.currentAnswer) {
+                            $(this).addClass('correct');
+                        }
+                    });
+                    mathState.streak = 0;
+                    var s2 = getScore('math');
+                    setScore('math', s2.w, s2.l + 1);
+                    updateMathScoreUI();
+                    showToast('❌ Oops! Answer was ' + mathState.currentAnswer, 'error');
+                }
+                $('#mathStreak').text(mathState.streak);
+                $('#mathStreakNum').text(mathState.streak);
+                setTimeout(function() {
+                    if (currentGame === 'math') {
+                        generateMathProblem();
+                        $all.removeClass('disabled correct wrong');
+                        mathState.busy = false;
+                    }
+                }, 1200);
+            });
+
+            $('.diff-btn').on('click', function() {
+                if (mathState.busy) return;
+                mathState.difficulty = $(this).data('diff');
+                $('.diff-btn').removeClass('active');
+                $(this).addClass('active');
+                if (mathState.timerId) clearInterval(mathState.timerId);
+                generateMathProblem();
+                startMathTimer();
+                showToast('🔁 Difficulty changed!', 'info');
+            });
+
+            $('#mathReset').on('click', function() {
+                if (mathState.timerId) clearInterval(mathState.timerId);
+                initMath();
+            });
+
+            // ============================================================
+            //  MEMORY MATCH
+            // ============================================================
+            var memState = {
+                cards: [],
+                flipped: [],
+                matched: [],
+                moves: 0,
+                pairs: 0,
+                totalPairs: 8,
+                lock: false,
+                scoreW: 0,
+                scoreL: 0,
+                gameOver: false
+            };
+
+            var memEmojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+
+            function updateMemScoreUI() {
+                var s = getScore('memory');
+                $('#memScoreW').text(s.w);
+                $('#memScoreL').text(s.l);
+                $('#memPairs').text(memState.pairs);
+                $('#memMoves').text(memState.moves);
+            }
+
+            function shuffleArray(arr) {
+                for (var i = arr.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var tmp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = tmp;
+                }
+                return arr;
+            }
+
+            function initMemory() {
+                var s = getScore('memory');
+                memState.scoreW = s.w;
+                memState.scoreL = s.l;
+                memState.moves = 0;
+                memState.pairs = 0;
+                memState.flipped = [];
+                memState.matched = [];
+                memState.lock = false;
+                memState.gameOver = false;
+                var deck = [];
+                memEmojis.forEach(function(e) { deck.push(e, e); });
+                deck = shuffleArray(deck);
+                memState.cards = deck.map(function(e, i) { return { id: i, emoji: e, flipped: false, matched: false }; });
+                renderMemory();
+                updateMemScoreUI();
+                $('#memPairs').text('0');
+                $('#memMoves').text('0');
+            }
+
+            function renderMemory() {
+                var $g = $('#memGrid');
+                $g.empty();
+                memState.cards.forEach(function(c, i) {
+                    var $div = $('<div class="mem-card" data-idx="' + i + '"></div>');
+                    if (c.flipped || c.matched) {
+                        $div.addClass('flipped');
+                        if (c.matched) $div.addClass('matched');
+                        $div.html('<span class="mem-emoji">' + c.emoji + '</span>');
+                    } else {
+                        $div.html('❓');
+                    }
+                    $g.append($div);
+                });
+            }
+
+            function checkMemMatch() {
+                var idx1 = memState.flipped[0];
+                var idx2 = memState.flipped[1];
+                var c1 = memState.cards[idx1];
+                var c2 = memState.cards[idx2];
+                if (c1.emoji === c2.emoji) {
+                    c1.matched = true;
+                    c2.matched = true;
+                    memState.pairs++;
+                    memState.flipped = [];
+                    $('#memPairs').text(memState.pairs);
+                    renderMemory();
+                    if (memState.pairs === memState.totalPairs) {
+                        memState.gameOver = true;
+                        addWin('memory');
+                        updateMemScoreUI();
+                        fireConfetti(70);
+                        showToast('🎉 You matched all pairs!', 'success');
+                    } else {
+                        showToast('✅ Match found!', 'success');
+                    }
+                    memState.lock = false;
+                } else {
+                    // no match
+                    setTimeout(function() {
+                        c1.flipped = false;
+                        c2.flipped = false;
+                        memState.flipped = [];
+                        renderMemory();
+                        memState.lock = false;
+                    }, 800);
+                }
+            }
+
+            $('#memGrid').on('click', '.mem-card', function() {
+                if (memState.lock || memState.gameOver) return;
+                var idx = parseInt($(this).data('idx'));
+                var card = memState.cards[idx];
+                if (card.flipped || card.matched) return;
+                if (memState.flipped.length >= 2) return;
+                card.flipped = true;
+                memState.flipped.push(idx);
+                memState.moves++;
+                $('#memMoves').text(memState.moves);
+                renderMemory();
+                if (memState.flipped.length === 2) {
+                    memState.lock = true;
+                    checkMemMatch();
+                }
+                // loss condition: too many moves? we'll set a threshold
+                if (memState.moves > 30 && memState.pairs < memState.totalPairs) {
+                    // not a hard loss, just a warning
+                }
+            });
+
+            $('#memReset').on('click', function() {
+                initMemory();
+            });
+
+            // ============================================================
+            //  SLIDE PUZZLE
+            // ============================================================
+            var puzzleState = {
+                tiles: [],
+                emptyIdx: 8,
+                moves: 0,
+                timer: 0,
+                timerId: null,
+                gameOver: false,
+                scoreW: 0,
+                scoreL: 0,
+                started: false
+            };
+
+            function updatePuzzleScoreUI() {
+                var s = getScore('puzzle');
+                $('#puzzleScoreW').text(s.w);
+                $('#puzzleScoreL').text(s.l);
+                $('#puzzleMoves').text(puzzleState.moves);
+                $('#puzzleTimer').text(puzzleState.timer);
+            }
+
+            function isPuzzleSolved() {
+                for (var i = 0; i < 8; i++) {
+                    if (puzzleState.tiles[i] !== i + 1) return false;
+                }
+                return puzzleState.tiles[8] === 0;
+            }
+
+            function renderPuzzle() {
+                var $b = $('#puzzleBoard');
+                $b.empty();
+                puzzleState.tiles.forEach(function(val, i) {
+                    var $t = $('<div class="puzzle-tile" data-idx="' + i + '">' + (val === 0 ? '' : val) + '</div>');
+                    if (val === 0) $t.addClass('empty');
+                    if (isPuzzleSolved()) $t.addClass('win-tile');
+                    $b.append($t);
+                });
+            }
+
+            function shufflePuzzle() {
+                var arr = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+                // perform random moves to shuffle
+                for (var k = 0; k < 200; k++) {
+                    var neighbors = getPuzzleNeighbors(arr);
+                    if (neighbors.length === 0) continue;
+                    var pick = neighbors[Math.floor(Math.random() * neighbors.length)];
+                    var emptyIdx2 = arr.indexOf(0);
+                    var tmp = arr[pick];
+                    arr[pick] = 0;
+                    arr[emptyIdx2] = tmp;
+                }
+                // ensure not solved
+                if (isPuzzleSolved()) {
+                    // swap first two non-zero
+                    var idx1 = arr.indexOf(1);
+                    var idx2 = arr.indexOf(2);
+                    if (idx1 !== -1 && idx2 !== -1) {
+                        arr[idx1] = 2;
+                        arr[idx2] = 1;
+                    }
+                }
+                puzzleState.tiles = arr;
+                puzzleState.emptyIdx = arr.indexOf(0);
+                puzzleState.moves = 0;
+                puzzleState.timer = 0;
+                puzzleState.gameOver = false;
+                puzzleState.started = false;
+                if (puzzleState.timerId) { clearInterval(puzzleState.timerId);
+                    puzzleState.timerId = null; }
+                renderPuzzle();
+                updatePuzzleScoreUI();
+            }
+
+            function getPuzzleNeighbors(tiles) {
+                var idx = tiles.indexOf(0);
+                var row = Math.floor(idx / 3);
+                var col = idx % 3;
+                var neighbors = [];
+                if (row > 0) neighbors.push(idx - 3);
+                if (row < 2) neighbors.push(idx + 3);
+                if (col > 0) neighbors.push(idx - 1);
+                if (col < 2) neighbors.push(idx + 1);
+                return neighbors;
+            }
+
+            function initPuzzle() {
+                var s = getScore('puzzle');
+                puzzleState.scoreW = s.w;
+                puzzleState.scoreL = s.l;
+                shufflePuzzle();
+                updatePuzzleScoreUI();
+            }
+
+            function startPuzzleTimer() {
+                if (puzzleState.timerId) return;
+                puzzleState.started = true;
+                puzzleState.timerId = setInterval(function() {
+                    if (!puzzleState.gameOver) {
+                        puzzleState.timer++;
+                        $('#puzzleTimer').text(puzzleState.timer);
+                    }
+                }, 1000);
+            }
+
+            $('#puzzleBoard').on('click', '.puzzle-tile:not(.empty)', function() {
+                if (puzzleState.gameOver) return;
+                var idx = parseInt($(this).data('idx'));
+                var emptyIdx = puzzleState.tiles.indexOf(0);
+                var neighbors = getPuzzleNeighbors(puzzleState.tiles);
+                if (neighbors.indexOf(idx) === -1) return;
+                // swap
+                puzzleState.tiles[emptyIdx] = puzzleState.tiles[idx];
+                puzzleState.tiles[idx] = 0;
+                puzzleState.emptyIdx = idx;
+                puzzleState.moves++;
+                $('#puzzleMoves').text(puzzleState.moves);
+                renderPuzzle();
+                if (!puzzleState.started) startPuzzleTimer();
+                if (isPuzzleSolved()) {
+                    puzzleState.gameOver = true;
+                    if (puzzleState.timerId) { clearInterval(puzzleState.timerId);
+                        puzzleState.timerId = null; }
+                    addWin('puzzle');
+                    updatePuzzleScoreUI();
+                    fireConfetti(70);
+                    showToast('🧩 Puzzle solved in ' + puzzleState.moves + ' moves!', 'success');
+                }
+            });
+
+            $('#puzzleReset').on('click', function() {
+                if (puzzleState.timerId) { clearInterval(puzzleState.timerId);
+                    puzzleState.timerId = null; }
+                shufflePuzzle();
+                updatePuzzleScoreUI();
+                showToast('🔀 Shuffled!', 'info');
+            });
+
+            // ============================================================
+            //  INIT
+            // ============================================================
+            updateGlobalScore();
+            updateMenuStats();
+
+            // pre-render TTT board
+            initTTT();
+
+            // pre-render memory
+            initMemory();
+
+            // pre-render puzzle
+            initPuzzle();
+
+            // pre-render math
+            initMath();
+
+            // show menu
+            showGame(null);
+
+            // ============================================================
+            //  KEYBOARD SHORTCUT: ESC to menu
+            // ============================================================
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (currentGame) showGame(null);
+                }
+            });
+
+        }); // end document ready
+    </script>
+
+</body>
+</html>
