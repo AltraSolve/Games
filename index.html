@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>🎮 Kids Game Hub</title>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js">
@@ -46,7 +46,7 @@
         /* ===== Main Container ===== */
         #app {
             width: 100%;
-            max-width: 820px;
+            max-width: 860px;
             background: var(--card);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -56,7 +56,6 @@
             transition: var(--transition);
         }
 
-        /* subtle animated gradient border */
         #app::before {
             content: '';
             position: absolute;
@@ -128,17 +127,139 @@
             color: var(--danger);
         }
 
+        /* ===== AD BANNER ===== */
+        .ad-banner {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b, #0f172a);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 18px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .ad-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .ad-banner>* {
+            position: relative;
+            z-index: 1;
+        }
+        .ad-banner .brand-link {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+        .ad-banner .brand-link:hover {
+            transform: scale(1.04);
+        }
+        .ad-banner .brand-logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #60A5FA, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .ad-banner .brand-tag {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.30);
+            color: #60A5FA;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 14px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+        .ad-banner .headline {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            margin: 10px 0 6px;
+            line-height: 1.3;
+        }
+        .ad-banner .sub-text {
+            font-size: 13px;
+            color: #cbd5e1;
+            max-width: 500px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .ad-banner .sub-text a {
+            color: #60A5FA;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .ad-banner .sub-text a:hover {
+            text-decoration: underline;
+        }
+        .ad-banner .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .ad-banner .btn-ad {
+            padding: 9px 22px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ad-banner .btn-ad-primary {
+            background: #2563EB;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+        }
+        .ad-banner .btn-ad-primary:hover {
+            background: #3B82F6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.45);
+        }
+        .ad-banner .btn-ad-secondary {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+        }
+        .ad-banner .btn-ad-secondary:hover {
+            background: #334155;
+            transform: translateY(-2px);
+        }
+        .ad-banner .btn-ad .icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
         /* ===== Menu ===== */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
             margin: 20px 0 10px;
         }
         .menu-card {
             background: var(--bg);
             border-radius: 18px;
-            padding: 24px 16px 20px;
+            padding: 20px 12px 16px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
@@ -152,26 +273,26 @@
             box-shadow: 0 10px 30px rgba(108, 99, 255, 0.15);
         }
         .menu-card .icon {
-            font-size: 44px;
+            font-size: 38px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .menu-card .name {
             font-weight: 700;
-            font-size: 17px;
+            font-size: 15px;
             color: var(--text);
         }
         .menu-card .desc {
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .menu-card .stats {
-            margin-top: 10px;
-            font-size: 12px;
+            margin-top: 8px;
+            font-size: 11px;
             display: flex;
             justify-content: center;
-            gap: 14px;
+            gap: 12px;
             color: #666;
         }
         .menu-card .stats .w {
@@ -205,37 +326,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
             gap: 10px;
         }
         .game-header .title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .game-header .title .emoji {
-            font-size: 28px;
+            font-size: 26px;
         }
         .game-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
         }
         .btn {
-            padding: 8px 20px;
+            padding: 6px 16px;
             border: none;
             border-radius: 40px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: var(--bg);
             color: var(--text);
         }
@@ -273,8 +394,8 @@
         }
         .btn-back {
             background: transparent;
-            font-size: 22px;
-            padding: 4px 12px;
+            font-size: 20px;
+            padding: 4px 10px;
             border-radius: 40px;
         }
         .btn-back:hover {
@@ -282,15 +403,16 @@
         }
 
         .game-score {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             background: var(--bg);
-            padding: 6px 18px;
+            padding: 4px 16px;
             border-radius: 40px;
             display: flex;
-            gap: 16px;
+            gap: 14px;
             align-items: center;
             flex-wrap: wrap;
+            margin-bottom: 10px;
         }
         .game-score .w {
             color: var(--success);
@@ -302,8 +424,65 @@
             color: #888;
         }
 
+        /* ===== Canvas Games ===== */
+        .game-canvas-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg);
+            border-radius: 18px;
+            padding: 8px;
+            position: relative;
+            touch-action: none;
+        }
+        .game-canvas-wrap canvas {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            aspect-ratio: 1/1;
+            border-radius: 14px;
+            background: #1a1a2e;
+            display: block;
+            touch-action: none;
+            cursor: pointer;
+        }
+        .game-canvas-wrap .canvas-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 18px;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        .game-canvas-wrap .canvas-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .game-canvas-wrap .canvas-overlay .sub {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-top: 6px;
+        }
+        .game-canvas-wrap .canvas-overlay .btn {
+            margin-top: 14px;
+            pointer-events: auto;
+            font-size: 16px;
+            padding: 10px 32px;
+        }
+
         /* ============================================================
-                   TIC-TAC-TOE
+                   TIC-TAC-TOE (DOM)
                    ============================================================ */
         .ttt-board {
             display: grid;
@@ -346,8 +525,8 @@
             text-align: center;
             font-size: 18px;
             font-weight: 600;
-            margin: 12px 0 8px;
-            min-height: 40px;
+            margin: 10px 0 6px;
+            min-height: 36px;
         }
         .ttt-status .highlight {
             color: var(--primary);
@@ -366,22 +545,22 @@
         }
 
         /* ============================================================
-                   MATH CHALLENGE
+                   MATH CHALLENGE (DOM)
                    ============================================================ */
         .math-area {
             text-align: center;
-            padding: 10px 0;
+            padding: 6px 0;
         }
         .math-problem {
-            font-size: 52px;
+            font-size: 42px;
             font-weight: 800;
             background: var(--bg);
-            padding: 20px 30px;
-            border-radius: 24px;
+            padding: 16px 24px;
+            border-radius: 20px;
             display: inline-block;
-            margin: 6px auto 14px;
-            letter-spacing: 2px;
-            min-width: 200px;
+            margin: 4px auto 12px;
+            letter-spacing: 1px;
+            min-width: 160px;
         }
         .math-problem .op {
             color: var(--secondary);
@@ -393,19 +572,19 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 14px;
-            margin: 14px 0 10px;
+            gap: 12px;
+            margin: 10px 0 8px;
         }
         .math-options .opt {
-            padding: 14px 32px;
-            font-size: 24px;
+            padding: 12px 26px;
+            font-size: 22px;
             font-weight: 700;
-            border-radius: 60px;
+            border-radius: 50px;
             background: var(--bg);
             cursor: pointer;
             transition: var(--transition);
             border: 3px solid transparent;
-            min-width: 80px;
+            min-width: 70px;
         }
         .math-options .opt:hover {
             transform: scale(1.06);
@@ -424,7 +603,7 @@
         }
         .math-options .opt.disabled {
             pointer-events: none;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         @keyframes shake {
@@ -433,43 +612,42 @@
                 transform: translateX(0);
             }
             25% {
-                transform: translateX(-12px);
+                transform: translateX(-10px);
             }
             75% {
-                transform: translateX(12px);
+                transform: translateX(10px);
             }
         }
 
         .math-timer {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--primary);
-            margin: 6px 0 12px;
+            margin: 4px 0 10px;
         }
         .math-streak {
-            font-size: 15px;
+            font-size: 14px;
             color: #888;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .math-streak strong {
             color: var(--accent);
-            font-size: 20px;
+            font-size: 18px;
         }
-
-        /* difficulty selector */
         .diff-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
-            margin: 6px 0 12px;
+            margin: 4px 0 10px;
+            flex-wrap: wrap;
         }
         .diff-group .diff-btn {
-            padding: 4px 16px;
+            padding: 3px 14px;
             border-radius: 40px;
             border: 2px solid #ddd;
             background: transparent;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: var(--transition);
         }
@@ -483,23 +661,23 @@
         }
 
         /* ============================================================
-                   MEMORY MATCH
+                   MEMORY MATCH (DOM)
                    ============================================================ */
         .mem-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            max-width: 440px;
-            margin: 10px auto;
+            gap: 10px;
+            max-width: 400px;
+            margin: 8px auto;
         }
         .mem-card {
             aspect-ratio: 1/1;
             background: linear-gradient(145deg, var(--primary), var(--primary-light));
-            border-radius: 18px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 36px;
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 4px 12px rgba(108, 99, 255, 0.25);
@@ -529,33 +707,19 @@
         .mem-card .mem-emoji {
             transition: 0.2s;
         }
-        .mem-info {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-            font-weight: 600;
-            font-size: 16px;
-            margin: 8px 0 12px;
-            flex-wrap: wrap;
-        }
-        .mem-info span {
-            background: var(--bg);
-            padding: 4px 18px;
-            border-radius: 40px;
-        }
 
         /* ============================================================
-                   SLIDE PUZZLE
+                   SLIDE PUZZLE (DOM)
                    ============================================================ */
         .puzzle-board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             max-width: 360px;
-            margin: 10px auto;
+            margin: 8px auto;
             aspect-ratio: 1/1;
             background: var(--bg);
-            border-radius: 20px;
+            border-radius: 18px;
             padding: 8px;
         }
         .puzzle-tile {
@@ -564,7 +728,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 34px;
+            font-size: 32px;
             font-weight: 800;
             color: #fff;
             cursor: pointer;
@@ -586,20 +750,6 @@
         .puzzle-tile.win-tile {
             background: var(--success);
             animation: pop 0.4s ease;
-        }
-        .puzzle-info {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-            font-weight: 600;
-            font-size: 16px;
-            margin: 8px 0 12px;
-            flex-wrap: wrap;
-        }
-        .puzzle-info span {
-            background: var(--bg);
-            padding: 4px 18px;
-            border-radius: 40px;
         }
 
         /* ===== Confetti ===== */
@@ -639,10 +789,10 @@
             transform: translateX(-50%) translateY(80px);
             background: var(--text);
             color: #fff;
-            padding: 14px 32px;
+            padding: 12px 28px;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transition: all 0.4s ease;
@@ -668,10 +818,10 @@
         /* ===== Footer ===== */
         .app-footer {
             text-align: center;
-            margin-top: 26px;
-            padding-top: 18px;
+            margin-top: 24px;
+            padding-top: 16px;
             border-top: 2px solid var(--bg);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #aaa;
             letter-spacing: 0.3px;
@@ -685,113 +835,151 @@
         }
 
         /* ===== Responsive ===== */
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
             #app {
-                padding: 18px 14px 30px;
+                padding: 16px 12px 24px;
             }
             .app-title {
-                font-size: 22px;
+                font-size: 20px;
             }
             .menu-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 10px;
             }
             .menu-card {
-                padding: 18px 10px 16px;
+                padding: 14px 8px 12px;
             }
             .menu-card .icon {
-                font-size: 34px;
+                font-size: 30px;
+            }
+            .menu-card .name {
+                font-size: 13px;
+            }
+            .game-header .title {
+                font-size: 17px;
+            }
+            .btn {
+                font-size: 11px;
+                padding: 5px 12px;
+            }
+            .game-score {
+                font-size: 11px;
+                padding: 3px 12px;
+                gap: 10px;
             }
             .ttt-board {
-                max-width: 280px;
-                gap: 8px;
+                max-width: 260px;
+                gap: 6px;
             }
             .ttt-cell {
-                font-size: 40px;
-                border-radius: 14px;
+                font-size: 36px;
+                border-radius: 12px;
             }
             .math-problem {
-                font-size: 36px;
-                padding: 14px 20px;
-                min-width: 140px;
+                font-size: 32px;
+                padding: 12px 16px;
+                min-width: 120px;
             }
             .math-options .opt {
-                padding: 10px 20px;
-                font-size: 20px;
-                min-width: 60px;
+                padding: 8px 18px;
+                font-size: 18px;
+                min-width: 54px;
             }
             .mem-grid {
-                gap: 8px;
-                max-width: 320px;
+                gap: 6px;
+                max-width: 280px;
             }
             .mem-card {
-                font-size: 30px;
-                border-radius: 14px;
+                font-size: 26px;
+                border-radius: 12px;
             }
             .puzzle-board {
-                max-width: 280px;
+                max-width: 260px;
                 padding: 6px;
                 gap: 6px;
             }
             .puzzle-tile {
-                font-size: 26px;
-                border-radius: 12px;
+                font-size: 24px;
+                border-radius: 10px;
             }
-            .game-header .title {
-                font-size: 18px;
+            .game-canvas-wrap canvas {
+                max-width: 100%;
             }
-            .btn {
+            .ad-banner {
+                padding: 14px 12px;
+            }
+            .ad-banner .headline {
+                font-size: 16px;
+            }
+            .ad-banner .brand-logo {
+                font-size: 22px;
+            }
+            .ad-banner .btn-ad {
+                font-size: 11px;
                 padding: 6px 14px;
-                font-size: 12px;
             }
             .score-summary {
                 font-size: 12px;
                 padding: 4px 12px;
-            }
-            .game-score {
-                font-size: 12px;
-                padding: 4px 12px;
-            }
-            .math-timer {
-                font-size: 17px;
+                gap: 10px;
             }
             .app-footer {
-                font-size: 13px;
+                font-size: 12px;
                 margin-top: 18px;
-                padding-top: 14px;
+                padding-top: 12px;
             }
         }
 
         @media (max-width: 400px) {
             .menu-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 8px;
+                gap: 6px;
             }
             .menu-card .name {
-                font-size: 14px;
+                font-size: 12px;
+            }
+            .menu-card .icon {
+                font-size: 24px;
             }
             .ttt-board {
-                max-width: 220px;
-                gap: 6px;
+                max-width: 200px;
+                gap: 4px;
             }
             .ttt-cell {
-                font-size: 30px;
-                border-radius: 10px;
+                font-size: 28px;
+                border-radius: 8px;
             }
             .mem-grid {
-                gap: 6px;
-                max-width: 260px;
-            }
-            .mem-card {
-                font-size: 24px;
-                border-radius: 10px;
-            }
-            .puzzle-board {
+                gap: 4px;
                 max-width: 220px;
             }
-            .puzzle-tile {
+            .mem-card {
                 font-size: 20px;
-                border-radius: 10px;
+                border-radius: 8px;
+            }
+            .puzzle-board {
+                max-width: 200px;
+                padding: 4px;
+                gap: 4px;
+            }
+            .puzzle-tile {
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            .game-canvas-wrap canvas {
+                max-width: 100%;
+            }
+            .ad-banner .headline {
+                font-size: 14px;
+            }
+            .ad-banner .btn-group {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .ad-banner .btn-ad {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -810,9 +998,32 @@
             </div>
         </div>
 
+        <!-- ====== AD BANNER ====== -->
+        <div class="ad-banner">
+            <a href="https://altrasolve.com" target="_blank" rel="noopener noreferrer" class="brand-link">
+                <div class="brand-logo">ALTRA SOLVE</div>
+            </a>
+            <span class="brand-tag">⚡ Custom Software Development</span>
+            <h2 class="headline">We Understand Your Business. We Build Software That Grows It.</h2>
+            <p class="sub-text">
+                From idea to scalable product —
+                <a href="https://altrasolve.com" target="_blank" rel="noopener noreferrer">Altra Solve</a>
+                turns your unique workflow into powerful digital solutions.
+            </p>
+            <div class="btn-group">
+                <a href="https://altrasolve.com" target="_blank" rel="noopener noreferrer" class="btn-ad btn-ad-primary">
+                    <span class="icon">📅</span> Book Free Consultation
+                </a>
+                <a href="https://altrasolve.com" target="_blank" rel="noopener noreferrer" class="btn-ad btn-ad-secondary">
+                    <span class="icon">➜</span> View Our Work
+                </a>
+            </div>
+        </div>
+
         <!-- ====== MENU ====== -->
         <div id="menuView">
             <div class="menu-grid">
+                <!-- Existing 4 games -->
                 <div class="menu-card" data-game="ttt">
                     <span class="icon">❌⭕</span>
                     <div class="name">Tic-Tac-Toe</div>
@@ -837,17 +1048,34 @@
                     <div class="desc">Arrange 1–8</div>
                     <div class="stats"><span class="w">🏆 <span id="menu-puzzle-w">0</span></span><span class="l">💔 <span id="menu-puzzle-l">0</span></span></div>
                 </div>
+                <!-- NEW 2 games (snake and bounce) -->
+                <div class="menu-card" data-game="snake">
+                    <span class="icon">🐍</span>
+                    <div class="name">Snake</div>
+                    <div class="desc">Eat & grow</div>
+                    <div class="stats"><span class="w">🏆 <span id="menu-snake-w">0</span></span><span class="l">💔 <span id="menu-snake-l">0</span></span></div>
+                </div>
+                <div class="menu-card" data-game="bounce">
+                    <span class="icon">🏀</span>
+                    <div class="name">Bounce Ball</div>
+                    <div class="desc">Break the bricks</div>
+                    <div class="stats"><span class="w">🏆 <span id="menu-bounce-w">0</span></span><span class="l">💔 <span id="menu-bounce-l">0</span></span></div>
+                </div>
             </div>
-            <p style="text-align:center;margin-top:18px;font-size:14px;color:#aaa;">👆 Tap a game to start playing!</p>
+            <p style="text-align:center;margin-top:14px;font-size:13px;color:#aaa;">👆 Tap a game to start playing!</p>
         </div>
 
-        <!-- ====== TIC-TAC-TOE ====== -->
+        <!-- ================================================================
+        GAMES (ttt, math, memory, puzzle, snake, bounce)
+        ================================================================ -->
+
+        <!-- TIC-TAC-TOE -->
         <div class="game-container" id="game-ttt">
             <div class="game-header">
                 <div class="title"><span class="emoji">❌⭕</span> Tic-Tac-Toe</div>
                 <div class="game-actions">
                     <button class="btn btn-back" data-back>⬅</button>
-                    <button class="btn btn-primary" id="tttReset">🔄 New Game</button>
+                    <button class="btn btn-primary" id="tttReset">🔄 New</button>
                 </div>
             </div>
             <div class="game-score">
@@ -856,12 +1084,10 @@
                 <span>🤝 <span class="d" id="tttScoreD">0</span></span>
             </div>
             <div class="ttt-status" id="tttStatus">👋 Player <span class="highlight">X</span>'s turn</div>
-            <div class="ttt-board" id="tttBoard">
-                <!-- 9 cells -->
-            </div>
+            <div class="ttt-board" id="tttBoard"></div>
         </div>
 
-        <!-- ====== MATH CHALLENGE ====== -->
+        <!-- MATH CHALLENGE -->
         <div class="game-container" id="game-math">
             <div class="game-header">
                 <div class="title"><span class="emoji">🧮</span> Math Challenge</div>
@@ -884,17 +1110,17 @@
                 <div class="math-timer">⏱️ <span id="mathTimer">30</span>s</div>
                 <div class="math-problem" id="mathProblem">5 <span class="op">+</span> 3 <span class="eq">=</span> ?</div>
                 <div class="math-options" id="mathOptions"></div>
-                <div class="math-streak" id="mathStreakDisplay">🔥 Streak: <strong id="mathStreakNum">0</strong></div>
+                <div class="math-streak">🔥 Streak: <strong id="mathStreakNum">0</strong></div>
             </div>
         </div>
 
-        <!-- ====== MEMORY MATCH ====== -->
+        <!-- MEMORY MATCH -->
         <div class="game-container" id="game-memory">
             <div class="game-header">
                 <div class="title"><span class="emoji">🃏</span> Memory Match</div>
                 <div class="game-actions">
                     <button class="btn btn-back" data-back>⬅</button>
-                    <button class="btn btn-primary" id="memReset">🔄 New Game</button>
+                    <button class="btn btn-primary" id="memReset">🔄 New</button>
                 </div>
             </div>
             <div class="game-score">
@@ -906,7 +1132,7 @@
             <div class="mem-grid" id="memGrid"></div>
         </div>
 
-        <!-- ====== SLIDE PUZZLE ====== -->
+        <!-- SLIDE PUZZLE -->
         <div class="game-container" id="game-puzzle">
             <div class="game-header">
                 <div class="title"><span class="emoji">🧩</span> Slide Puzzle</div>
@@ -922,7 +1148,57 @@
                 <span>⏱️ <span id="puzzleTimer">0</span>s</span>
             </div>
             <div class="puzzle-board" id="puzzleBoard"></div>
-            <p style="text-align:center;font-size:14px;color:#888;margin-top:8px;">Tap a tile next to the empty space to slide it.</p>
+            <p style="text-align:center;font-size:13px;color:#888;margin-top:6px;">Tap a tile next to the empty space.</p>
+        </div>
+
+        <!-- SNAKE -->
+        <div class="game-container" id="game-snake">
+            <div class="game-header">
+                <div class="title"><span class="emoji">🐍</span> Snake</div>
+                <div class="game-actions">
+                    <button class="btn btn-back" data-back>⬅</button>
+                    <button class="btn btn-primary" id="snakeReset">🔄 New</button>
+                </div>
+            </div>
+            <div class="game-score">
+                <span>🏆 <span class="w" id="snakeScoreW">0</span></span>
+                <span>💔 <span class="l" id="snakeScoreL">0</span></span>
+                <span>🍎 Score: <span id="snakeScore">0</span></span>
+                <span>📏 Length: <span id="snakeLength">0</span></span>
+            </div>
+            <div class="game-canvas-wrap">
+                <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                <div class="canvas-overlay" id="snakeOverlay">
+                    <div>💥 Game Over</div>
+                    <div class="sub" id="snakeFinalScore">Score: 0</div>
+                    <button class="btn btn-primary" id="snakeRestartBtn">🔄 Play Again</button>
+                </div>
+            </div>
+            <p style="text-align:center;font-size:12px;color:#888;margin-top:4px;">⬆⬇⬅➡ or swipe to move</p>
+        </div>
+
+        <!-- BOUNCE BALL -->
+        <div class="game-container" id="game-bounce">
+            <div class="game-header">
+                <div class="title"><span class="emoji">🏀</span> Bounce Ball</div>
+                <div class="game-actions">
+                    <button class="btn btn-back" data-back>⬅</button>
+                    <button class="btn btn-primary" id="bounceReset">🔄 New</button>
+                </div>
+            </div>
+            <div class="game-score">
+                <span>🏆 <span class="w" id="bounceScoreW">0</span></span>
+                <span>💔 <span class="l" id="bounceScoreL">0</span></span>
+                <span>🧱 Score: <span id="bounceScore">0</span></span>
+            </div>
+            <div class="game-canvas-wrap">
+                <canvas id="bounceCanvas" width="400" height="500"></canvas>
+                <div class="canvas-overlay" id="bounceOverlay">
+                    <div>💥 Game Over</div>
+                    <div class="sub" id="bounceFinalScore">Score: 0</div>
+                    <button class="btn btn-primary" id="bounceRestartBtn">🔄 Play Again</button>
+                </div>
+            </div>
         </div>
 
         <!-- ====== FOOTER ====== -->
@@ -935,10 +1211,10 @@
     <!-- ====== TOAST ====== -->
     <div class="toast" id="toast"></div>
 
-    <!-- ====== CONFETTI CONTAINER ====== -->
+    <!-- ====== CONFETTI ====== -->
     <div class="confetti-container" id="confettiContainer"></div>
 
-    <!-- ============================================================== -->
+    <!-- ================================================================ -->
     <!-- ====== JAVASCRIPT ====== -->
     <script>
         $(function() {
@@ -983,7 +1259,7 @@
             function updateGlobalScore() {
                 var tw = 0,
                     tl = 0;
-                ['ttt', 'math', 'memory', 'puzzle'].forEach(function(g) {
+                ['ttt', 'math', 'memory', 'puzzle', 'snake', 'bounce'].forEach(function(g) {
                     tw += parseInt(localStorage.getItem('score_' + g + '_w') || 0);
                     tl += parseInt(localStorage.getItem('score_' + g + '_l') || 0);
                 });
@@ -992,7 +1268,7 @@
             }
 
             function updateMenuStats() {
-                ['ttt', 'math', 'memory', 'puzzle'].forEach(function(g) {
+                ['ttt', 'math', 'memory', 'puzzle', 'snake', 'bounce'].forEach(function(g) {
                     var w = parseInt(localStorage.getItem('score_' + g + '_w') || 0);
                     var l = parseInt(localStorage.getItem('score_' + g + '_l') || 0);
                     $('#menu-' + g + '-w').text(w);
@@ -1027,33 +1303,49 @@
                 showToast('😅 Better luck next time!', 'error');
             }
 
-            function addDraw(game) {
-                // draw doesn't affect win/loss
-                showToast('🤝 It\'s a draw!', 'info');
-            }
-
             // ============================================================
             //  NAVIGATION
             // ============================================================
             var currentGame = null;
+            var animFrameIds = {};
 
             function showGame(gameId) {
+                // stop all animations
+                Object.keys(animFrameIds).forEach(function(key) {
+                    if (animFrameIds[key]) {
+                        cancelAnimationFrame(animFrameIds[key]);
+                        animFrameIds[key] = null;
+                    }
+                });
+                // stop any game-specific intervals
+                stopAllIntervals();
+
                 $('.game-container').removeClass('active');
                 $('#menuView').hide();
                 if (gameId) {
                     $('#game-' + gameId).addClass('active');
                     currentGame = gameId;
+                    $('.canvas-overlay').removeClass('show');
                 } else {
                     $('#menuView').show();
                     currentGame = null;
                     updateMenuStats();
                     updateGlobalScore();
                 }
-                // update game scores
+                // update scores
                 if (gameId === 'ttt') updateTTTScoreUI();
                 if (gameId === 'math') updateMathScoreUI();
                 if (gameId === 'memory') updateMemScoreUI();
                 if (gameId === 'puzzle') updatePuzzleScoreUI();
+                if (gameId === 'snake') updateSnakeScoreUI();
+                if (gameId === 'bounce') updateBounceScoreUI();
+            }
+
+            var gameIntervals = [];
+
+            function stopAllIntervals() {
+                gameIntervals.forEach(function(id) { clearInterval(id); });
+                gameIntervals = [];
             }
 
             $('.menu-card').on('click', function() {
@@ -1063,6 +1355,8 @@
                 if (g === 'math') initMath();
                 if (g === 'memory') initMemory();
                 if (g === 'puzzle') initPuzzle();
+                if (g === 'snake') initSnake();
+                if (g === 'bounce') initBounce();
             });
 
             $('[data-back]').on('click', function() {
@@ -1070,16 +1364,9 @@
             });
 
             // ============================================================
-            //  TIC-TAC-TOE
+            //  TIC-TAC-TOE (unchanged)
             // ============================================================
-            var tttState = {
-                board: ['', '', '', '', '', '', '', '', ''],
-                turn: 'X',
-                gameOver: false,
-                scoreW: 0,
-                scoreL: 0,
-                scoreD: 0
-            };
+            var tttState = { board: ['', '', '', '', '', '', '', '', ''], turn: 'X', gameOver: false };
 
             function updateTTTScoreUI() {
                 var s = getScore('ttt');
@@ -1093,10 +1380,6 @@
                 tttState.board = ['', '', '', '', '', '', '', '', ''];
                 tttState.turn = 'X';
                 tttState.gameOver = false;
-                var s = getScore('ttt');
-                tttState.scoreW = s.w;
-                tttState.scoreL = s.l;
-                tttState.scoreD = parseInt(localStorage.getItem('score_ttt_d') || 0);
                 renderTTT();
                 $('#tttStatus').html('👋 Player <span class="highlight">X</span>\'s turn');
                 updateTTTScoreUI();
@@ -1131,9 +1414,7 @@
                         return { winner: b[l[0]], cells: l };
                     }
                 }
-                if (b.every(function(c) { return c !== ''; })) {
-                    return { winner: 'draw', cells: [] };
-                }
+                if (b.every(function(c) { return c !== ''; })) return { winner: 'draw', cells: [] };
                 return null;
             }
 
@@ -1164,7 +1445,7 @@
                         var d = parseInt(localStorage.getItem('score_ttt_d') || 0);
                         localStorage.setItem('score_ttt_d', d + 1);
                         updateTTTScoreUI();
-                        addDraw('ttt');
+                        showToast('🤝 It\'s a draw!', 'info');
                     }
                     return;
                 }
@@ -1173,28 +1454,15 @@
             }
 
             $('#tttBoard').on('click', '.ttt-cell', function() {
-                var idx = parseInt($(this).data('idx'));
-                handleTTTClick(idx);
+                handleTTTClick(parseInt($(this).data('idx')));
             });
-
-            $('#tttReset').on('click', function() {
-                initTTT();
-            });
+            $('#tttReset').on('click', initTTT);
 
             // ============================================================
-            //  MATH CHALLENGE
+            //  MATH CHALLENGE (unchanged)
             // ============================================================
-            var mathState = {
-                difficulty: 'easy',
-                scoreW: 0,
-                scoreL: 0,
-                streak: 0,
-                timer: 30,
-                timerId: null,
-                busy: false,
-                currentAnswer: null,
-                options: []
-            };
+            var mathState = { difficulty: 'easy', streak: 0, timer: 30, timerId: null, busy: false, currentAnswer: null,
+                options: [] };
 
             function updateMathScoreUI() {
                 var s = getScore('math');
@@ -1214,8 +1482,7 @@
                 var a = Math.floor(Math.random() * maxNum) + 1;
                 var b = Math.floor(Math.random() * maxNum) + 1;
                 var op = ops[Math.floor(Math.random() * ops.length)];
-                var answer;
-                var display;
+                var answer, display;
                 if (op === '+') { answer = a + b;
                     display = a + ' <span class="op">+</span> ' + b; } else if (op === '-') {
                     if (a < b) { var tmp = a;
@@ -1225,7 +1492,6 @@
                     display = a + ' <span class="op">−</span> ' + b;
                 } else { answer = a * b;
                     display = a + ' <span class="op">×</span> ' + b; }
-                // generate options
                 var opts = new Set();
                 opts.add(answer);
                 while (opts.size < 4) {
@@ -1256,7 +1522,6 @@
                     if (mathState.timer <= 0) {
                         clearInterval(mathState.timerId);
                         mathState.timerId = null;
-                        // time's up — loss
                         if (!mathState.busy) {
                             mathState.busy = true;
                             addLoss('math');
@@ -1264,27 +1529,23 @@
                             updateMathScoreUI();
                             showToast('⏰ Time\'s up!', 'error');
                             setTimeout(function() {
-                                if (currentGame === 'math') {
-                                    generateMathProblem();
-                                    startMathTimer();
-                                }
+                                if (currentGame === 'math') { generateMathProblem();
+                                    startMathTimer(); }
                             }, 1200);
                         }
                     }
                 }, 1000);
+                gameIntervals.push(mathState.timerId);
             }
 
             function initMath() {
                 var s = getScore('math');
-                mathState.scoreW = s.w;
-                mathState.scoreL = s.l;
                 mathState.streak = 0;
                 mathState.busy = false;
                 if (mathState.timerId) clearInterval(mathState.timerId);
                 updateMathScoreUI();
                 generateMathProblem();
                 startMathTimer();
-                // highlight active diff
                 $('.diff-btn').removeClass('active');
                 $('.diff-btn[data-diff="' + mathState.difficulty + '"]').addClass('active');
             }
@@ -1315,7 +1576,7 @@
                     var s2 = getScore('math');
                     setScore('math', s2.w, s2.l + 1);
                     updateMathScoreUI();
-                    showToast('❌ Oops! Answer was ' + mathState.currentAnswer, 'error');
+                    showToast('❌ Answer was ' + mathState.currentAnswer, 'error');
                 }
                 $('#mathStreak').text(mathState.streak);
                 $('#mathStreakNum').text(mathState.streak);
@@ -1338,28 +1599,14 @@
                 startMathTimer();
                 showToast('🔁 Difficulty changed!', 'info');
             });
-
-            $('#mathReset').on('click', function() {
-                if (mathState.timerId) clearInterval(mathState.timerId);
-                initMath();
-            });
+            $('#mathReset').on('click', function() { if (mathState.timerId) clearInterval(mathState.timerId);
+                initMath(); });
 
             // ============================================================
-            //  MEMORY MATCH
+            //  MEMORY MATCH (unchanged)
             // ============================================================
-            var memState = {
-                cards: [],
-                flipped: [],
-                matched: [],
-                moves: 0,
-                pairs: 0,
-                totalPairs: 8,
-                lock: false,
-                scoreW: 0,
-                scoreL: 0,
-                gameOver: false
-            };
-
+            var memState = { cards: [], flipped: [], matched: [], moves: 0, pairs: 0, totalPairs: 8, lock: false,
+                gameOver: false };
             var memEmojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
 
             function updateMemScoreUI() {
@@ -1382,8 +1629,6 @@
 
             function initMemory() {
                 var s = getScore('memory');
-                memState.scoreW = s.w;
-                memState.scoreL = s.l;
                 memState.moves = 0;
                 memState.pairs = 0;
                 memState.flipped = [];
@@ -1417,10 +1662,10 @@
             }
 
             function checkMemMatch() {
-                var idx1 = memState.flipped[0];
-                var idx2 = memState.flipped[1];
-                var c1 = memState.cards[idx1];
-                var c2 = memState.cards[idx2];
+                var idx1 = memState.flipped[0],
+                    idx2 = memState.flipped[1];
+                var c1 = memState.cards[idx1],
+                    c2 = memState.cards[idx2];
                 if (c1.emoji === c2.emoji) {
                     c1.matched = true;
                     c2.matched = true;
@@ -1439,7 +1684,6 @@
                     }
                     memState.lock = false;
                 } else {
-                    // no match
                     setTimeout(function() {
                         c1.flipped = false;
                         c2.flipped = false;
@@ -1461,34 +1705,15 @@
                 memState.moves++;
                 $('#memMoves').text(memState.moves);
                 renderMemory();
-                if (memState.flipped.length === 2) {
-                    memState.lock = true;
-                    checkMemMatch();
-                }
-                // loss condition: too many moves? we'll set a threshold
-                if (memState.moves > 30 && memState.pairs < memState.totalPairs) {
-                    // not a hard loss, just a warning
-                }
+                if (memState.flipped.length === 2) { memState.lock = true;
+                    checkMemMatch(); }
             });
-
-            $('#memReset').on('click', function() {
-                initMemory();
-            });
+            $('#memReset').on('click', initMemory);
 
             // ============================================================
-            //  SLIDE PUZZLE
+            //  SLIDE PUZZLE (unchanged)
             // ============================================================
-            var puzzleState = {
-                tiles: [],
-                emptyIdx: 8,
-                moves: 0,
-                timer: 0,
-                timerId: null,
-                gameOver: false,
-                scoreW: 0,
-                scoreL: 0,
-                started: false
-            };
+            var puzzleState = { tiles: [], emptyIdx: 8, moves: 0, timer: 0, timerId: null, gameOver: false, started: false };
 
             function updatePuzzleScoreUI() {
                 var s = getScore('puzzle');
@@ -1499,9 +1724,7 @@
             }
 
             function isPuzzleSolved() {
-                for (var i = 0; i < 8; i++) {
-                    if (puzzleState.tiles[i] !== i + 1) return false;
-                }
+                for (var i = 0; i < 8; i++) { if (puzzleState.tiles[i] !== i + 1) return false; }
                 return puzzleState.tiles[8] === 0;
             }
 
@@ -1516,9 +1739,20 @@
                 });
             }
 
+            function getPuzzleNeighbors(tiles) {
+                var idx = tiles.indexOf(0);
+                var row = Math.floor(idx / 3),
+                    col = idx % 3;
+                var neighbors = [];
+                if (row > 0) neighbors.push(idx - 3);
+                if (row < 2) neighbors.push(idx + 3);
+                if (col > 0) neighbors.push(idx - 1);
+                if (col < 2) neighbors.push(idx + 1);
+                return neighbors;
+            }
+
             function shufflePuzzle() {
                 var arr = [1, 2, 3, 4, 5, 6, 7, 8, 0];
-                // perform random moves to shuffle
                 for (var k = 0; k < 200; k++) {
                     var neighbors = getPuzzleNeighbors(arr);
                     if (neighbors.length === 0) continue;
@@ -1528,15 +1762,11 @@
                     arr[pick] = 0;
                     arr[emptyIdx2] = tmp;
                 }
-                // ensure not solved
                 if (isPuzzleSolved()) {
-                    // swap first two non-zero
-                    var idx1 = arr.indexOf(1);
-                    var idx2 = arr.indexOf(2);
-                    if (idx1 !== -1 && idx2 !== -1) {
-                        arr[idx1] = 2;
-                        arr[idx2] = 1;
-                    }
+                    var idx1 = arr.indexOf(1),
+                        idx2 = arr.indexOf(2);
+                    if (idx1 !== -1 && idx2 !== -1) { arr[idx1] = 2;
+                        arr[idx2] = 1; }
                 }
                 puzzleState.tiles = arr;
                 puzzleState.emptyIdx = arr.indexOf(0);
@@ -1550,22 +1780,8 @@
                 updatePuzzleScoreUI();
             }
 
-            function getPuzzleNeighbors(tiles) {
-                var idx = tiles.indexOf(0);
-                var row = Math.floor(idx / 3);
-                var col = idx % 3;
-                var neighbors = [];
-                if (row > 0) neighbors.push(idx - 3);
-                if (row < 2) neighbors.push(idx + 3);
-                if (col > 0) neighbors.push(idx - 1);
-                if (col < 2) neighbors.push(idx + 1);
-                return neighbors;
-            }
-
             function initPuzzle() {
                 var s = getScore('puzzle');
-                puzzleState.scoreW = s.w;
-                puzzleState.scoreL = s.l;
                 shufflePuzzle();
                 updatePuzzleScoreUI();
             }
@@ -1574,11 +1790,10 @@
                 if (puzzleState.timerId) return;
                 puzzleState.started = true;
                 puzzleState.timerId = setInterval(function() {
-                    if (!puzzleState.gameOver) {
-                        puzzleState.timer++;
-                        $('#puzzleTimer').text(puzzleState.timer);
-                    }
+                    if (!puzzleState.gameOver) { puzzleState.timer++;
+                        $('#puzzleTimer').text(puzzleState.timer); }
                 }, 1000);
+                gameIntervals.push(puzzleState.timerId);
             }
 
             $('#puzzleBoard').on('click', '.puzzle-tile:not(.empty)', function() {
@@ -1587,7 +1802,6 @@
                 var emptyIdx = puzzleState.tiles.indexOf(0);
                 var neighbors = getPuzzleNeighbors(puzzleState.tiles);
                 if (neighbors.indexOf(idx) === -1) return;
-                // swap
                 puzzleState.tiles[emptyIdx] = puzzleState.tiles[idx];
                 puzzleState.tiles[idx] = 0;
                 puzzleState.emptyIdx = idx;
@@ -1602,10 +1816,9 @@
                     addWin('puzzle');
                     updatePuzzleScoreUI();
                     fireConfetti(70);
-                    showToast('🧩 Puzzle solved in ' + puzzleState.moves + ' moves!', 'success');
+                    showToast('🧩 Puzzle solved!', 'success');
                 }
             });
-
             $('#puzzleReset').on('click', function() {
                 if (puzzleState.timerId) { clearInterval(puzzleState.timerId);
                     puzzleState.timerId = null; }
@@ -1615,29 +1828,489 @@
             });
 
             // ============================================================
+            //  SNAKE (Canvas)
+            // ============================================================
+            var snake = {
+                canvas: null,
+                ctx: null,
+                width: 400,
+                height: 400,
+                gridSize: 20,
+                snake: [],
+                food: { x: 0, y: 0 },
+                direction: 'right',
+                nextDirection: 'right',
+                score: 0,
+                gameOver: false,
+                animId: null,
+                initialized: false,
+                speed: 150,
+                lastMove: 0,
+            };
+
+            function updateSnakeScoreUI() {
+                var s = getScore('snake');
+                $('#snakeScoreW').text(s.w);
+                $('#snakeScoreL').text(s.l);
+                $('#snakeScore').text(snake.score);
+                $('#snakeLength').text(snake.snake.length);
+            }
+
+            function initSnake() {
+                var canvas = document.getElementById('snakeCanvas');
+                if (!canvas) return;
+                snake.canvas = canvas;
+                snake.ctx = canvas.getContext('2d');
+                snake.width = canvas.width;
+                snake.height = canvas.height;
+                snake.gridSize = 20;
+                var startX = Math.floor(snake.width / snake.gridSize / 2);
+                var startY = Math.floor(snake.height / snake.gridSize / 2);
+                snake.snake = [
+                    { x: startX, y: startY },
+                    { x: startX - 1, y: startY },
+                    { x: startX - 2, y: startY }
+                ];
+                snake.direction = 'right';
+                snake.nextDirection = 'right';
+                snake.score = 0;
+                snake.gameOver = false;
+                snake.speed = 150;
+                snake.lastMove = 0;
+                snake.initialized = true;
+                spawnSnakeFood();
+                $('#snakeOverlay').removeClass('show');
+                updateSnakeScoreUI();
+                if (snake.animId) cancelAnimationFrame(snake.animId);
+                snakeLoop();
+            }
+
+            function spawnSnakeFood() {
+                var cols = Math.floor(snake.width / snake.gridSize);
+                var rows = Math.floor(snake.height / snake.gridSize);
+                var pos;
+                var attempts = 0;
+                do {
+                    pos = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+                    attempts++;
+                } while (snake.snake.some(function(s) { return s.x === pos.x && s.y === pos.y; }) && attempts < 500);
+                snake.food = pos;
+            }
+
+            function snakeLoop(timestamp) {
+                if (!snake.initialized) return;
+                var ctx = snake.ctx;
+                var c = snake.canvas;
+                var cols = Math.floor(c.width / snake.gridSize);
+                var rows = Math.floor(c.height / snake.gridSize);
+
+                // clear
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, c.width, c.height);
+
+                // grid
+                ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+                ctx.lineWidth = 0.5;
+                for (var gx = 0; gx <= cols; gx++) {
+                    ctx.beginPath();
+                    ctx.moveTo(gx * snake.gridSize, 0);
+                    ctx.lineTo(gx * snake.gridSize, c.height);
+                    ctx.stroke();
+                }
+                for (var gy = 0; gy <= rows; gy++) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, gy * snake.gridSize);
+                    ctx.lineTo(c.width, gy * snake.gridSize);
+                    ctx.stroke();
+                }
+
+                // move
+                if (!snake.gameOver && timestamp - snake.lastMove > snake.speed) {
+                    snake.lastMove = timestamp;
+                    snake.direction = snake.nextDirection;
+                    var head = { x: snake.snake[0].x, y: snake.snake[0].y };
+                    if (snake.direction === 'right') head.x++;
+                    else if (snake.direction === 'left') head.x--;
+                    else if (snake.direction === 'up') head.y--;
+                    else if (snake.direction === 'down') head.y++;
+
+                    // wall collision
+                    if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+                        snake.gameOver = true;
+                    }
+
+                    // self collision
+                    if (!snake.gameOver && snake.snake.some(function(s) { return s.x === head.x && s.y === head.y; })) {
+                        snake.gameOver = true;
+                    }
+
+                    if (!snake.gameOver) {
+                        snake.snake.unshift(head);
+                        if (head.x === snake.food.x && head.y === snake.food.y) {
+                            snake.score++;
+                            updateSnakeScoreUI();
+                            spawnSnakeFood();
+                            if (snake.speed > 70) snake.speed -= 2;
+                        } else {
+                            snake.snake.pop();
+                        }
+                    }
+                }
+
+                // draw food
+                ctx.shadowColor = 'rgba(255,107,107,0.5)';
+                ctx.shadowBlur = 16;
+                ctx.fillStyle = '#FF6B6B';
+                ctx.beginPath();
+                ctx.arc(snake.food.x * snake.gridSize + snake.gridSize / 2,
+                    snake.food.y * snake.gridSize + snake.gridSize / 2,
+                    snake.gridSize / 2 - 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // draw snake
+                snake.snake.forEach(function(seg, idx) {
+                    var ratio = 1 - (idx / snake.snake.length) * 0.5;
+                    var r = Math.floor(108 * ratio);
+                    var g = Math.floor(99 * ratio);
+                    var b = Math.floor(255 * ratio);
+                    ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+                    ctx.shadowColor = 'rgba(108,99,255,0.2)';
+                    ctx.shadowBlur = 8;
+                    var pad = 1;
+                    ctx.fillRect(seg.x * snake.gridSize + pad, seg.y * snake.gridSize + pad,
+                        snake.gridSize - pad * 2, snake.gridSize - pad * 2);
+                });
+                ctx.shadowBlur = 0;
+
+                // score
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 18px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('🍎 ' + snake.score, 14, 34);
+
+                if (snake.gameOver) {
+                    $('#snakeOverlay').addClass('show');
+                    $('#snakeFinalScore').text('Score: ' + snake.score);
+                    if (snake.score > 0 && !snake._lossAdded) {
+                        snake._lossAdded = true;
+                        addLoss('snake');
+                        updateSnakeScoreUI();
+                    }
+                }
+
+                snake.animId = requestAnimationFrame(snakeLoop);
+                animFrameIds['snake'] = snake.animId;
+            }
+
+            function snakeSetDirection(dir) {
+                if (snake.gameOver) return;
+                var opposites = { up: 'down', down: 'up', left: 'right', right: 'left' };
+                if (dir !== opposites[snake.direction]) {
+                    snake.nextDirection = dir;
+                }
+            }
+
+            // keyboard controls
+            $(document).on('keydown', function(e) {
+                if (currentGame === 'snake') {
+                    var key = e.key;
+                    if (key === 'ArrowUp') { e.preventDefault();
+                        snakeSetDirection('up'); }
+                    if (key === 'ArrowDown') { e.preventDefault();
+                        snakeSetDirection('down'); }
+                    if (key === 'ArrowLeft') { e.preventDefault();
+                        snakeSetDirection('left'); }
+                    if (key === 'ArrowRight') { e.preventDefault();
+                        snakeSetDirection('right'); }
+                }
+            });
+
+            // touch/swipe for snake
+            var snakeTouchStart = null;
+            $('#snakeCanvas').on('touchstart', function(e) {
+                var touch = e.originalEvent.touches[0];
+                snakeTouchStart = { x: touch.clientX, y: touch.clientY };
+            });
+            $('#snakeCanvas').on('touchmove', function(e) {
+                e.preventDefault();
+                if (!snakeTouchStart || currentGame !== 'snake') return;
+                var touch = e.originalEvent.touches[0];
+                var dx = touch.clientX - snakeTouchStart.x;
+                var dy = touch.clientY - snakeTouchStart.y;
+                if (Math.abs(dx) > 20 || Math.abs(dy) > 20) {
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        snakeSetDirection(dx > 0 ? 'right' : 'left');
+                    } else {
+                        snakeSetDirection(dy > 0 ? 'down' : 'up');
+                    }
+                    snakeTouchStart = null;
+                }
+            });
+            $('#snakeCanvas').on('touchend', function() { snakeTouchStart = null; });
+
+            $('#snakeRestartBtn').on('click', function() { snake._lossAdded = false;
+                initSnake(); });
+            $('#snakeReset').on('click', function() { snake._lossAdded = false;
+                initSnake(); });
+
+            // ============================================================
+            //  BOUNCE BALL (Canvas)
+            // ============================================================
+            var bounce = {
+                canvas: null,
+                ctx: null,
+                width: 400,
+                height: 500,
+                ball: { x: 200, y: 400, r: 10, dx: 3, dy: -4 },
+                paddle: { x: 150, y: 470, w: 80, h: 12 },
+                bricks: [],
+                score: 0,
+                gameOver: false,
+                animId: null,
+                initialized: false,
+                brickRows: 5,
+                brickCols: 7,
+                brickW: 44,
+                brickH: 18,
+                brickPadding: 4,
+                brickTop: 50,
+            };
+
+            function updateBounceScoreUI() {
+                var s = getScore('bounce');
+                $('#bounceScoreW').text(s.w);
+                $('#bounceScoreL').text(s.l);
+                $('#bounceScore').text(bounce.score);
+            }
+
+            function initBounce() {
+                var canvas = document.getElementById('bounceCanvas');
+                if (!canvas) return;
+                bounce.canvas = canvas;
+                bounce.ctx = canvas.getContext('2d');
+                bounce.width = canvas.width;
+                bounce.height = canvas.height;
+                bounce.ball = { x: 200, y: 400, r: 10, dx: 3, dy: -4 };
+                bounce.paddle = { x: 150, y: 470, w: 80, h: 12 };
+                bounce.score = 0;
+                bounce.gameOver = false;
+                bounce.initialized = true;
+                // create bricks
+                bounce.bricks = [];
+                var bw = bounce.brickW,
+                    bh = bounce.brickH,
+                    pad = bounce.brickPadding;
+                var totalW = bounce.brickCols * (bw + pad) - pad;
+                var startX = (bounce.width - totalW) / 2;
+                var colors = ['#FF6584', '#FFD93D', '#6BCB77', '#4ECDC4', '#6C63FF'];
+                for (var r = 0; r < bounce.brickRows; r++) {
+                    for (var c = 0; c < bounce.brickCols; c++) {
+                        bounce.bricks.push({
+                            x: startX + c * (bw + pad),
+                            y: bounce.brickTop + r * (bh + pad),
+                            w: bw,
+                            h: bh,
+                            alive: true,
+                            color: colors[r % colors.length]
+                        });
+                    }
+                }
+                $('#bounceOverlay').removeClass('show');
+                updateBounceScoreUI();
+                if (bounce.animId) cancelAnimationFrame(bounce.animId);
+                bounceLoop();
+            }
+
+            function bounceLoop() {
+                if (!bounce.initialized) return;
+                var ctx = bounce.ctx;
+                var c = bounce.canvas;
+
+                ctx.clearRect(0, 0, c.width, c.height);
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, c.width, c.height);
+
+                // bricks
+                bounce.bricks.forEach(function(b) {
+                    if (!b.alive) return;
+                    ctx.shadowColor = 'rgba(255,255,255,0.1)';
+                    ctx.shadowBlur = 6;
+                    ctx.fillStyle = b.color;
+                    ctx.fillRect(b.x, b.y, b.w, b.h);
+                    ctx.shadowBlur = 0;
+                    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(b.x, b.y, b.w, b.h);
+                });
+
+                // paddle
+                ctx.shadowColor = 'rgba(108,99,255,0.4)';
+                ctx.shadowBlur = 16;
+                ctx.fillStyle = '#6C63FF';
+                ctx.beginPath();
+                ctx.roundRect(bounce.paddle.x, bounce.paddle.y, bounce.paddle.w, bounce.paddle.h, 6);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // ball
+                ctx.shadowColor = 'rgba(255,215,0,0.5)';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#FFD93D';
+                ctx.beginPath();
+                ctx.arc(bounce.ball.x, bounce.ball.y, bounce.ball.r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                if (!bounce.gameOver) {
+                    // move ball
+                    bounce.ball.x += bounce.ball.dx;
+                    bounce.ball.y += bounce.ball.dy;
+
+                    // wall collision
+                    if (bounce.ball.x - bounce.ball.r < 0 || bounce.ball.x + bounce.ball.r > c.width) {
+                        bounce.ball.dx *= -1;
+                    }
+                    if (bounce.ball.y - bounce.ball.r < 0) {
+                        bounce.ball.dy *= -1;
+                    }
+
+                    // paddle collision
+                    var p = bounce.paddle;
+                    if (bounce.ball.dy > 0 &&
+                        bounce.ball.y + bounce.ball.r > p.y &&
+                        bounce.ball.y + bounce.ball.r < p.y + p.h + 10 &&
+                        bounce.ball.x > p.x - bounce.ball.r &&
+                        bounce.ball.x < p.x + p.w + bounce.ball.r) {
+                        var hitPos = (bounce.ball.x - p.x) / p.w;
+                        var angle = (hitPos - 0.5) * 1.2;
+                        var speed = Math.sqrt(bounce.ball.dx * bounce.ball.dx + bounce.ball.dy * bounce.ball.dy);
+                        bounce.ball.dx = speed * Math.sin(angle);
+                        bounce.ball.dy = -speed * Math.cos(angle);
+                        if (Math.abs(bounce.ball.dx) < 0.8) bounce.ball.dx = 0.8 * (bounce.ball.dx >= 0 ? 1 : -1);
+                        bounce.ball.y = p.y - bounce.ball.r;
+                    }
+
+                    // brick collision
+                    var ballX = bounce.ball.x,
+                        ballY = bounce.ball.y,
+                        r = bounce.ball.r;
+                    bounce.bricks.forEach(function(b) {
+                        if (!b.alive) return;
+                        var closestX = Math.max(b.x, Math.min(ballX, b.x + b.w));
+                        var closestY = Math.max(b.y, Math.min(ballY, b.y + b.h));
+                        var distX = ballX - closestX;
+                        var distY = ballY - closestY;
+                        if (distX * distX + distY * distY < r * r) {
+                            b.alive = false;
+                            bounce.score++;
+                            updateBounceScoreUI();
+                            var overlapX = r - Math.abs(distX);
+                            var overlapY = r - Math.abs(distY);
+                            if (overlapX < overlapY) {
+                                bounce.ball.dx *= -1;
+                            } else {
+                                bounce.ball.dy *= -1;
+                            }
+                            fireConfetti(6);
+                            if (bounce.bricks.every(function(br) { return !br.alive; })) {
+                                bounce.gameOver = true;
+                                addWin('bounce');
+                                updateBounceScoreUI();
+                                $('#bounceOverlay').addClass('show');
+                                $('#bounceFinalScore').text('🎉 You won! Score: ' + bounce.score);
+                            }
+                        }
+                    });
+
+                    // ball fall
+                    if (bounce.ball.y + bounce.ball.r > c.height) {
+                        bounce.gameOver = true;
+                        addLoss('bounce');
+                        updateBounceScoreUI();
+                        $('#bounceOverlay').addClass('show');
+                        $('#bounceFinalScore').text('Score: ' + bounce.score);
+                    }
+                }
+
+                // score
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 18px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('🏀 ' + bounce.score, 14, 34);
+
+                if (bounce.gameOver && !bounce._winShown) {
+                    if (bounce.bricks.every(function(br) { return !br.alive; })) {}
+                    bounce._winShown = true;
+                }
+
+                bounce.animId = requestAnimationFrame(bounceLoop);
+                animFrameIds['bounce'] = bounce.animId;
+            }
+
+            // paddle control
+            var bounceMouseX = 150;
+            $('#bounceCanvas').on('mousemove', function(e) {
+                if (currentGame !== 'bounce') return;
+                var rect = this.getBoundingClientRect();
+                var scaleX = bounce.width / rect.width;
+                var mx = (e.clientX - rect.left) * scaleX;
+                bounceMouseX = mx - bounce.paddle.w / 2;
+                if (bounceMouseX < 0) bounceMouseX = 0;
+                if (bounceMouseX + bounce.paddle.w > bounce.width) bounceMouseX = bounce.width - bounce.paddle.w;
+                bounce.paddle.x = bounceMouseX;
+            });
+            $('#bounceCanvas').on('touchmove', function(e) {
+                e.preventDefault();
+                if (currentGame !== 'bounce') return;
+                var touch = e.originalEvent.touches[0];
+                var rect = this.getBoundingClientRect();
+                var scaleX = bounce.width / rect.width;
+                var mx = (touch.clientX - rect.left) * scaleX;
+                bounceMouseX = mx - bounce.paddle.w / 2;
+                if (bounceMouseX < 0) bounceMouseX = 0;
+                if (bounceMouseX + bounce.paddle.w > bounce.width) bounceMouseX = bounce.width - bounce.paddle.w;
+                bounce.paddle.x = bounceMouseX;
+            });
+
+            if (!CanvasRenderingContext2D.prototype.roundRect) {
+                CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+                    if (r > w / 2) r = w / 2;
+                    if (r > h / 2) r = h / 2;
+                    this.moveTo(x + r, y);
+                    this.lineTo(x + w - r, y);
+                    this.quadraticCurveTo(x + w, y, x + w, y + r);
+                    this.lineTo(x + w, y + h - r);
+                    this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                    this.lineTo(x + r, y + h);
+                    this.quadraticCurveTo(x, y + h, x, y + h - r);
+                    this.lineTo(x, y + r);
+                    this.quadraticCurveTo(x, y, x + r, y);
+                    this.closePath();
+                    return this;
+                };
+            }
+
+            $('#bounceRestartBtn').on('click', function() { bounce._winShown = false;
+                initBounce(); });
+            $('#bounceReset').on('click', function() { bounce._winShown = false;
+                initBounce(); });
+
+            // ============================================================
             //  INIT
             // ============================================================
             updateGlobalScore();
             updateMenuStats();
 
-            // pre-render TTT board
             initTTT();
-
-            // pre-render memory
             initMemory();
-
-            // pre-render puzzle
             initPuzzle();
-
-            // pre-render math
             initMath();
+            initSnake();
+            initBounce();
 
-            // show menu
             showGame(null);
 
-            // ============================================================
-            //  KEYBOARD SHORTCUT: ESC to menu
-            // ============================================================
             $(document).on('keydown', function(e) {
                 if (e.key === 'Escape') {
                     if (currentGame) showGame(null);
